@@ -53,7 +53,10 @@ bool LinkedListDict<T, Compare>::find_helper(node *r, T key, T &pred) {
 
 template <typename T, class Compare>
 bool LinkedListDict<T, Compare>::find(T key, T &pred) {
-  return find_helper(root, key, pred);
+	cout << "In LinkedListDict.cpp find \n";
+
+
+	return find_helper(root, key, pred);
 }
 
 template <typename T, class Compare>

@@ -1,7 +1,7 @@
 /*
   solve.cpp: contains 'main' function.
 
-*/
+ */
 
 #include <iostream>
 
@@ -36,109 +36,116 @@ using namespace std;
 // This function does the actual solving.
 void solvePuzzle(PuzzleState *start, TodoList<PuzzleState*> &active, PredDict<PuzzleState*> &seen, vector<PuzzleState*> &solution) {
 
-  PuzzleState *state;
-  PuzzleState *temp;
+	PuzzleState *state;
+	PuzzleState *temp;
 
-  active.add(start); // Must explore the successors of the start state.
-  seen.add(start,NULL); // We've seen this state.  It has not predecessor.
+	active.add(start); // Must explore the successors of the start state.
+	seen.add(start,NULL); // We've seen this state.  It has not predecessor.
 
-  while (!active.is_empty()) {
-    // Loop Invariants:
-    // 'seen' contains the set of puzzle states that we know how to reach.
-    // 'active' contains the set of puzzle states that we know how to reach,
-    //    and whose successors we might not have explored yet.
+	cout << "In solve loop \n";
+	while (!active.is_empty()) {
 
-    state = active.remove();
-    // Note:  Do not delete this, as this PuzzleState is also in 'seen'
+		// Loop Invariants:
+		// 'seen' contains the set of puzzle states that we know how to reach.
+		// 'active' contains the set of puzzle states that we know how to reach,
+		//    and whose successors we might not have explored yet.
 
-    // The following two lines are handy for debugging, or seeing what
-    // the algorithm is doing.
-    //cout << "Exploring State: \n";
-    //state->print(cout);
+		state = active.remove();
+		// Note:  Do not delete this, as this PuzzleState is also in 'seen'
 
-    if (state->isSolution()) {
-      // Found a solution!
-      cout << "Found solution! \n";
-      state->print(cout);
+		// The following two lines are handy for debugging, or seeing what
+		// the algorithm is doing.
+		cout << "Exploring State: \n";
+		state->print(cout);
 
-      // Follow predecessors to construct path to solution.
-      temp = state;
-      while (temp!=NULL) {
-	solution.push_back(temp);
-	// Guaranteed to succeed, because these states must have been
-	// added to dictionary already.
-        seen.find(temp,temp);
-      }
-      return;
-    }
+		if (state->isSolution()) {
+			// Found a solution!
+			cout << "Found solution! \n";
+			//state->print(cout);
 
-    vector<PuzzleState*> nextMoves = state->getSuccessors();
-    for (unsigned int i=0; i < nextMoves.size(); i++) {
-      if (!seen.find(nextMoves[i], temp)) {
-        // Never seen this state before.  Add it to 'seen' and 'active'
-        active.add(nextMoves[i]);
-        seen.add(nextMoves[i], state);
-      }
-    }
-  }
+			// Follow predecessors to construct path to solution.
+			temp = state;
+			while (temp!=NULL) {
+				cout << "Pushing back solution... \n";
+				cout << "In Temp State: \n";
+				temp->print(cout);
 
-  // Ran out of states to explore.  No solution!
-  solution.clear();
-  return;
+				solution.push_back(temp);
+				// Guaranteed to succeed, because these states must have been
+				// added to dictionary already.
+				seen.find(temp,temp);
+			}
+			return;
+		} else { cout << "State is not a solution \n"; }
+
+
+		vector<PuzzleState*> nextMoves = state->getSuccessors();
+		for (unsigned int i=0; i < nextMoves.size(); i++) {
+			if (!seen.find(nextMoves[i], temp)) {
+				// Never seen this state before.  Add it to 'seen' and 'active'
+				active.add(nextMoves[i]);
+				seen.add(nextMoves[i], state);
+			}
+		}
+	}
+
+	// Ran out of states to explore.  No solution!
+	solution.clear();
+	return;
 }
 
 int main (int argc, char *argv[])
 {
-  PuzzleState *startState;
+	PuzzleState *startState;
 
-  // 221 STUDENTS: Initialize startState with an object of the type
-  // of puzzle you want solved.
-  // For some kinds of puzzles, you will want to pass in a parameter
-  // to specify the starting position (e.g., for the 8- or 15-puzzles.)
+	// 221 STUDENTS: Initialize startState with an object of the type
+	// of puzzle you want solved.
+	// For some kinds of puzzles, you will want to pass in a parameter
+	// to specify the starting position (e.g., for the 8- or 15-puzzles.)
 
-  //startState = new WolfGoatCabbage();
+	startState = new WolfGoatCabbage();
 
-  //startState = new Sudoku("000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+	//startState = new Sudoku("000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
-  // Note: 1/2 of all positions are not possible.  If a run takes a huge
-  // amount of time, try exchanging two adjacent numbers and trying again.
-  //startState = new SliderPuzzle(3,3,"8 7 6 5 4 3 2 1 0");
-  //startState = new SliderPuzzle(3,4,"11 10 9 8 7 6 5 4 3 1 2 0");
-  startState = new SliderPuzzle(4,4,"15 14 13 12 11 10 9 8 7 6 5 4 3 1 2 0");
+	// Note: 1/2 of all positions are not possible.  If a run takes a huge
+	// amount of time, try exchanging two adjacent numbers and trying again.
+	//startState = new SliderPuzzle(3,3,"8 7 6 5 4 3 2 1 0");
+	//startState = new SliderPuzzle(3,4,"11 10 9 8 7 6 5 4 3 1 2 0");
+	//startState = new SliderPuzzle(4,4,"15 14 13 12 11 10 9 8 7 6 5 4 3 1 2 0");
 
 
-  // 221 STUDENTS:  Uncomment one of these, to select BFS, DFS, or BestFS
-  // Later, you will put declarations here to use your new implementations
-  // (ArrayQueue, LinkedListStack, and HeapPriorityQueue).
+	// 221 STUDENTS:  Uncomment one of these, to select BFS, DFS, or BestFS
+	// Later, you will put declarations here to use your new implementations
+	// (ArrayQueue, LinkedListStack, and HeapPriorityQueue).
 
-  // This is BFS:
+	// This is BFS:
 
-  // This is BFS:
-  //LinkedListQueue<PuzzleState*> activeStates;
+	// This is BFS:
+	//LinkedListQueue<PuzzleState*> activeStates;
 
-  // This is DFS
-  //ArrayStack<PuzzleState*> activeStates;
+	// This is DFS
+	ArrayStack<PuzzleState*> activeStates;
 
-  // This is BestFS
-  VectorPriorityQueue<PuzzleState*, ComparePuzzleBadness> activeStates;
+	// This is BestFS
+	//VectorPriorityQueue<PuzzleState*, ComparePuzzleBadness> activeStates;
 
-  // 221 STUDENTS:  Uncomment one of these to pick the dictionary implementation
-  //NullDict<PuzzleState*> seenStates;
-  LinkedListDict<PuzzleState*, ComparePuzzleState> seenStates;
-  //BSTDict<PuzzleState*, ComparePuzzleState> seenStates;
+	// 221 STUDENTS:  Uncomment one of these to pick the dictionary implementation
+	//NullDict<PuzzleState*> seenStates;
+	LinkedListDict<PuzzleState*, ComparePuzzleState> seenStates;
+	//BSTDict<PuzzleState*, ComparePuzzleState> seenStates;
 
-  vector<PuzzleState*> solution;
+	vector<PuzzleState*> solution;
 
-  solvePuzzle(startState, activeStates, seenStates, solution);
+	solvePuzzle(startState, activeStates, seenStates, solution);
 
-  // Print out solution
-  for (int i=solution.size()-1; i >= 0; i--) {
-    cout << "STEP " << solution.size()-i << ":\n";
-    solution[i]->print(cout);
-    cout << endl;
-  }
-  
-  delete startState;
+	// Print out solution
+	for (int i=solution.size()-1; i >= 0; i--) {
+		cout << "STEP " << solution.size()-i << ":\n";
+		solution[i]->print(cout);
+		cout << endl;
+	}
 
-  return 0;
+	delete startState;
+
+	return 0;
 }
