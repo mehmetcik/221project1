@@ -19,49 +19,50 @@ Questions:
 
 1.  Could BFS solve Wolf-Goat-Cabbage, using NullDict?
 
-Yes it could but no steps?
+Yes it could but no steps?  No steps because NullDict is just a dummy implementation of a dictionary.
 
 2.  What happened when you tried to use DFS to solve Wolf-Goat-Cabbage
 using NullDict?  Briefly explain why this happened.
 
-It hangs...  
+It hangs... This I assume would be because DFS needs to be able to keep track of previous steps in order
+to backtrack if it gets stuck.  NullDict does not keep track of previous steps though.
 
 3.  Which of BFS, DFS, and BestFS (using the TodoList implementations
 I provided) correctly solve Wolf-Goat-Cabbage, using LinkedListDict?
 
-All of them with steps.
+All of them with steps. Yes.
 
 4.  Could BFS solve Sudoku?  What happened?  Briefly explain why.
 
-Assume 4, 5, 6 are run with NullDict
+Assume 4, 5, 6 are run with NullDict (since Sudoku does not need to display steps to the solution)
 
-No.  It hangs...
+No.  It hangs...but why?
 
 
 
 5.  Could DFS solve Sudoku?  What happened?  Briefly explain why.
 
-Yes...
+Yes...but why?
 
 6.  Could BestFS solve Sudoku?
 
-Yes...
+Yes...no explanation need??
 
 7.  Using LinkedListDict, try using BFS and DFS to solve the 3x3
 Slider Puzzle.  What happened?  Briefly explain why.
 
-It hangs...
+It hangs...but why?
 
 8.  Using LinkedListDict, try using BestFS to solve the 3x3
 Slider Puzzle.  How long did this take?
 
-Not long.
+Not long.  Very quick.
 
 9.  Using LinkedListDict, use BestFS to solve the 3x4 and 4x4
 Slider Puzzles I provided.  How long did these take?  Which
 computer did you use?
 
-A little longer and a looooooooooooooooooooooooot longer.  
+A little longer and a looooooooooooooooooooooooot longer. Yes (over 6min for me). 
 
 Mine???
 (AMD A6-3650 - 2.6 GHz - 6 Core)
